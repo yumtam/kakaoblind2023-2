@@ -1,8 +1,10 @@
+import os
 import requests
 
 url = 'https://68ecj67379.execute-api.ap-northeast-2.amazonaws.com/api'
 
-with open("../resources/token.txt", 'r') as fp:
+filename = os.path.join(os.path.dirname(__file__), '../resources/token.txt')
+with open(filename, 'r') as fp:
     token = fp.readline()
 
 auth_key = None
