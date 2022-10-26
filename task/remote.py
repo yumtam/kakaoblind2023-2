@@ -60,3 +60,6 @@ def simulate(room_assign):
 
 def get_score():
     return get(path='/score')
+
+
+__all__ = ["start", "get_new_requests", "reply", "simulate", "get_score"]
