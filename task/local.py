@@ -115,7 +115,10 @@ class ScoreHandler:
         penalty += 4500 * self._failed_peeps / self._total_req_peeps
         penalty += 500 * self._refused_req_peeps / self._total_req_peeps
         penalty += 90 * self._refused_req_cnt / self._total_req_cnt
-        return penalty, (self._failed_peeps, self._refused_req_peeps, self._refused_req_cnt)
+        return (f"score: {penalty} "
+                f"(failed-peeps: {self._failed_peeps}, "
+                f"refused-peeps: {self._refused_req_peeps}, "
+                f"refused-requests: {self._refused_req_cnt})")
 
     def update_refused(self, req):
         self._refused_req_cnt += 1
