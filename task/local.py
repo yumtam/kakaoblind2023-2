@@ -2,7 +2,7 @@ import os
 import copy
 import ast
 
-import params
+from task import params
 
 
 class Task:
@@ -26,6 +26,9 @@ class Task:
 
     def get_turn(self):
         return self._turn + 1
+
+    def finished(self):
+        return self.get_turn() >= self._params['max_turns']
 
     def get_new_requests(self):
         if self._turn < len(self._reqs):
@@ -157,6 +160,10 @@ def get_turn():
     return task.get_turn()
 
 
+def finished():
+    return task.finished()
+
+
 def get_new_requests() -> list[dict[str, int]]:
     return task.get_new_requests()
 
@@ -173,4 +180,4 @@ def get_score():
     return task.get_score()
 
 
-__all__ = ["get_turn", "start", "get_new_requests", "reply", "simulate", "get_score"]
+__all__ = ["get_turn", "finished", "start", "get_new_requests", "reply", "simulate", "get_score"]
