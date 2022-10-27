@@ -18,7 +18,6 @@ class Task:
         with open(filepath, 'r') as fp:
             raw = fp.readline()
             self._reqs = ast.literal_eval(raw)
-        print(len(self._reqs))
         self._pending_reqs = []
         self._accepted_reqs = []
         self._score_handler = ScoreHandler(self._reqs)
@@ -77,7 +76,6 @@ class Task:
     def _process_room_assignments(self, room_assign):
         current_turn_reqs = [req for req in self._accepted_reqs
                              if req['check_in_date'] == self.get_turn()]
-        print(room_assign)
         for assign in room_assign:
             filtered_reqs = [req for req in current_turn_reqs
                              if req['id'] == assign['id']]
@@ -95,8 +93,6 @@ class Task:
 
     def simulate(self, room_assign):
         self._hotel.process_checkout(self.get_turn())
-        print(f"{self._pending_reqs=}")
-        print(f"{self._accepted_reqs=}")
         self._refuse_overdue_reqs()
         self._process_room_assignments(room_assign)
         self._turn += 1
@@ -119,12 +115,10 @@ class ScoreHandler:
         return penalty, (self._failed_peeps, self._refused_req_peeps, self._refused_req_cnt)
 
     def update_refused(self, req):
-        print(f'update_refused, {req=}')
         self._refused_req_cnt += 1
         self._refused_req_peeps += req['amount']
 
     def update_failed(self, req):
-        print(f'update_failed, {req=}')
         self._failed_peeps += req['amount']
 
 
