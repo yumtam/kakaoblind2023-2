@@ -164,6 +164,10 @@ def finished():
     return task.finished()
 
 
+def get_params():
+    return task.params
+
+
 def get_new_requests() -> list[dict[str, int]]:
     return task.get_new_requests()
 
@@ -180,4 +184,4 @@ def get_score():
     return task.get_score()
 
 
-__all__ = ["get_turn", "finished", "start", "get_new_requests", "reply", "simulate", "get_score"]
+__all__ = ["get_turn", "finished", "get_params", "start", "get_new_requests", "reply", "simulate", "get_score"]
