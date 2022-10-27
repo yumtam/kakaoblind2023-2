@@ -12,7 +12,7 @@ class Task:
                            if p['task_no'] == task_no]
         if not filtered_params:
             raise ValueError(f"Invalid {task_no=}, see params.py")
-        self._params = filtered_params.pop()
+        self.params = filtered_params.pop()
         filename = f'../resources/{task_no}.in'
         filepath = os.path.join(os.path.dirname(__file__), filename)
         with open(filepath, 'r') as fp:
@@ -21,14 +21,14 @@ class Task:
         self._pending_reqs = []
         self._accepted_reqs = []
         self._score_handler = ScoreHandler(self._reqs)
-        self._hotel = Hotel(self._params['hotel_height'], self._params['hotel_width'])
+        self._hotel = Hotel(self.params['hotel_height'], self.params['hotel_width'])
         self._enlist_pending_reqs()
 
     def get_turn(self):
         return self._turn + 1
 
     def finished(self):
-        return self.get_turn() >= self._params['max_turns']
+        return self.get_turn() >= self.params['max_turns']
 
     def get_new_requests(self):
         if self._turn < len(self._reqs):
