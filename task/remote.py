@@ -11,6 +11,10 @@ auth_key = None
 turn = 1
 
 
+def get_turn():
+    return turn
+
+
 def start(problem_no):
     global auth_key, turn
 
@@ -64,4 +68,4 @@ def get_score():
     return get(path='/score')
 
 
-__all__ = ["start", "get_new_requests", "reply", "simulate", "get_score"]
+__all__ = ["get_turn", "start", "get_new_requests", "reply", "simulate", "get_score"]
