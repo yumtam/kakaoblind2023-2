@@ -1,4 +1,4 @@
-from task import local as interactor
+from task import local as task
 
 
 class Hotel:
@@ -35,14 +35,14 @@ class Hotel:
 
 
 def solve(task_no):
-    interactor.start(task_no)
+    task.start(task_no)
 
-    params = interactor.get_params()
+    params = task.get_params()
     hotel = Hotel(params['hotel_height'], params['hotel_width'])
 
     accepted_requests = []
-    while not interactor.finished():
-        reqs = interactor.get_new_requests()
+    while not task.finished():
+        reqs = task.get_new_requests()
         replies = []
         for req in reqs:
             amount = req['amount']
@@ -63,16 +63,16 @@ def solve(task_no):
             replies.append({
                 'id': req['id'],
                 'reply': 'accepted'})
-        interactor.reply(replies)
+        task.reply(replies)
         current_turn_requests = [req for req in accepted_requests
-                                 if req['check_in_date'] == interactor.get_turn()]
+                                 if req['check_in_date'] == task.get_turn()]
         room_assign = [{
             'id': req['id'],
             'room_number': req['room_no']}
             for req in current_turn_requests]
-        interactor.simulate(room_assign)
+        task.simulate(room_assign)
 
-    print(interactor.get_score())
+    print(task.get_score())
 
 
 if __name__ == '__main__':
