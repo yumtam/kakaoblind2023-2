@@ -75,4 +75,6 @@ def solve(task_no):
     print(interactor.get_score())
 
 
-solve(1)
+if __name__ == '__main__':
+    solve(1)
+    solve(2)
