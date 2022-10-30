@@ -1,4 +1,4 @@
-from task import local as task
+from task import local
 
 
 class Hotel:
@@ -34,47 +34,50 @@ class Hotel:
         return floor, index
 
 
-def solve(task_no):
-    task.start(task_no)
+class Solver:
+    def __init__(self, task_no):
+        self._task = local.Task(task_no)
 
-    params = task.get_params()
-    hotel = Hotel(params['hotel_height'], params['hotel_width'])
+    def solve(self):
+        task = self._task
+        params = task.params
+        hotel = Hotel(params['hotel_height'], params['hotel_width'])
 
-    accepted_requests = []
-    while not task.finished():
-        reqs = task.get_new_requests()
-        replies = []
-        for req in reqs:
-            amount = req['amount']
-            in_date = req['check_in_date']
-            out_date = req['check_out_date']
-            try:
-                floor, index = hotel.reserve(amount, in_date, out_date)
-            except Hotel.CouldNotFindEmptyRooms:
+        accepted_requests = []
+        while not task.finished():
+            reqs = task.get_new_requests()
+            replies = []
+            for req in reqs:
+                amount = req['amount']
+                in_date = req['check_in_date']
+                out_date = req['check_out_date']
+                try:
+                    floor, index = hotel.reserve(amount, in_date, out_date)
+                except Hotel.CouldNotFindEmptyRooms:
+                    replies.append({
+                        'id': req['id'],
+                        'reply': 'refused'})
+                    continue
+                room_no = 1000 * (floor + 1) + (index + 1)
+                accepted_requests.append({
+                    'id': req['id'],
+                    'check_in_date': req['check_in_date'],
+                    'room_no': room_no})
                 replies.append({
                     'id': req['id'],
-                    'reply': 'refused'})
-                continue
-            room_no = 1000 * (floor + 1) + (index + 1)
-            accepted_requests.append({
+                    'reply': 'accepted'})
+            task.put_reply(replies)
+            current_turn_requests = [req for req in accepted_requests
+                                     if req['check_in_date'] == task.get_turn()]
+            room_assign = [{
                 'id': req['id'],
-                'check_in_date': req['check_in_date'],
-                'room_no': room_no})
-            replies.append({
-                'id': req['id'],
-                'reply': 'accepted'})
-        task.reply(replies)
-        current_turn_requests = [req for req in accepted_requests
-                                 if req['check_in_date'] == task.get_turn()]
-        room_assign = [{
-            'id': req['id'],
-            'room_number': req['room_no']}
-            for req in current_turn_requests]
-        task.simulate(room_assign)
+                'room_number': req['room_no']}
+                for req in current_turn_requests]
+            task.simulate(room_assign)
 
-    print(task.get_score())
+        print(task.get_score())
 
 
 if __name__ == '__main__':
-    solve(1)
-    solve(2)
+    Solver(1).solve()
+    Solver(2).solve()
