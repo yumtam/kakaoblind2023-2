@@ -1,5 +1,4 @@
 /venv/
 /.fleet/
 token.txt
-*.in
 __pycache__/
